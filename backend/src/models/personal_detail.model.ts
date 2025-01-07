@@ -27,19 +27,19 @@ PersonalDetail.init(
       primaryKey: true,
     },
     firstName: {
-      type: DataTypes.STRING((length = 150)),
+      type: DataTypes.STRING(150),
       allowNull: false,
     },
     lastName: {
-      type: DataTypes.STRING((length = 150)),
+      type: DataTypes.STRING(150),
       allowNull: false,
     },
     email: {
-      type: DataTypes.STRING((length = 150)),
+      type: DataTypes.STRING(150),
       allowNull: false,
     },
     phoneNumber: {
-      type: DataTypes.STRING((length = 15)),
+      type: DataTypes.STRING(15),
     },
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
