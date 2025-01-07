@@ -45,19 +45,11 @@ PersonalDetail.init(
     updatedAt: DataTypes.DATE,
   },
   {
-    tableName: "user_accounts",
+    tableName: "personal_details",
     timestamps: true,
     underscored: true,
     sequelize,
   }
 );
-
-(async () => {
-  try {
-    await PersonalDetail.sync({ force: true });
-  } catch (error) {
-    console.error(`Unable to connect to the database:`, error);
-  }
-})();
 
 export default PersonalDetail;
