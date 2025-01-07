@@ -32,6 +32,7 @@
     "@types/express": "^5.0.0",
     "@types/helmet": "^4.0.0",
     "@types/morgan": "^1.9.9",
+    "@types/node": "^22.10.5",
     "@types/sequelize": "^4.28.20",
     "nodemon": "^3.1.7",
     "ts-node": "^10.9.2",
