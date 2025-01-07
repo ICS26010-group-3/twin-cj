@@ -29,14 +29,25 @@ PersonalDetail.init(
     firstName: {
       type: DataTypes.STRING(150),
       allowNull: false,
+      validate: {
+        min: 5,
+        max: 150,
+      },
     },
     lastName: {
       type: DataTypes.STRING(150),
       allowNull: false,
+      validate: {
+        min: 5,
+        max: 150,
+      },
     },
     email: {
       type: DataTypes.STRING(150),
       allowNull: false,
+      validate: {
+        isEmail: true,
+      },
     },
     phoneNumber: {
       type: DataTypes.STRING(15),
