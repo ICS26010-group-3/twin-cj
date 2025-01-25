@@ -48,6 +48,10 @@
     color: #d0cccc;
 }
 
+.booking-status-form-section input:focus::placeholder {
+    color: transparent;
+}
+
 .booking-status-form-section button {
     width: 327px;
     height: 43px;
