@@ -1,13 +1,13 @@
-.booking-status-form-section {
+.booking-status-reference-section {
     text-align: center;
     font-family: 'Open Sans', sans-serif;
     display: flex;
     justify-content: center;
-    margin-bottom: 68px;
     padding: 0 10%;
+    margin-bottom: 26px;
 }
 
-.booking-status-form-section div {
+.booking-status-reference-section div {
     width: 100%;
     max-width: 964px;
     height: 242px;
@@ -19,7 +19,7 @@
     flex-direction: column;
 }
 
-.booking-status-form-section p {
+.booking-status-reference-section p {
     color: #757575;
     font-size: 18px;
     font-weight: 600;
@@ -27,7 +27,7 @@
     line-height: 1.4;
 }
 
-.booking-status-form-section input {
+.booking-status-reference-section input {
     border: 1px solid #C8C5C5;
     width: 100%;
     max-width: 512px;
@@ -38,21 +38,21 @@
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.booking-status-form-section input:focus {
+.booking-status-reference-section input:focus {
     border-color: #D9AD7C;
     outline: none;
     box-shadow: 0 0 10px rgba(217, 173, 124, 0.5);
 }
 
-.booking-status-form-section input::placeholder {
+.booking-status-reference-section input::placeholder {
     color: #d0cccc;
 }
 
-.booking-status-form-section input:focus::placeholder {
+.booking-status-reference-section input:focus::placeholder {
     color: transparent;
 }
 
-.booking-status-form-section button {
+.booking-status-reference-section button {
     width: 327px;
     height: 43px;
     border-radius: 10px;
@@ -63,27 +63,28 @@
     letter-spacing: .1cm;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.1s ease-in-out, box-shadow 0.3s ease;
+    font-size: 14px;
 }
 
-.booking-status-form-section button:hover {
+.booking-status-reference-section button:hover {
     background-color: #C8965E;
 }
 
-.booking-status-form-section button:active {
+.booking-status-reference-section button:active {
     background-color: #A77C4E;
 }
 
-.booking-status-form-section button:focus {
+.booking-status-reference-section button:focus {
     outline: none;
     box-shadow: 0 0 10px rgba(217, 173, 124, 0.5);
 }
 
 @media (max-width: 768px) {
-    .booking-status-form-section input {
+    .booking-status-reference-section input {
         width: 85%;
     }
 
-    .booking-status-form-section button {
+    .booking-status-reference-section button {
         width: 70%;
     }
 }

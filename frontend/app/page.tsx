@@ -10,8 +10,10 @@
 
 /* to be transferred to booking_status/page.tsx */
 
-import BookingStatusForm from "./components/BookingStatusForm";
+import BookingStatusDetails from "./components/BookingStatusDetails";
 import BookingStatusIntro from "./components/BookingStatusIntro";
+import BookingStatusPrintButton from "./components/BookingStatusPrintButton";
+import BookingStatusReference from "./components/BookingStatusReference";
 import HeroImage from "./components/HeroImage";
 import styles from "./page.module.scss";
 
@@ -20,7 +22,9 @@ export default function Home() {
     <div className={styles.page}>
       <HeroImage imageURL="View Booking Status Hero.png" />
       <BookingStatusIntro />
-      <BookingStatusForm />
+      <BookingStatusReference />
+      <BookingStatusDetails />
+      <BookingStatusPrintButton />
     </div>
   );
 }

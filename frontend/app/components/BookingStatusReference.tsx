@@ -1,8 +1,8 @@
-import styles from "./BookingStatusForm.module.scss";
+import styles from "./BookingStatusReference.module.scss";
 
-const BookingStatusForm = () => {
+const BookingStatusReference = () => {
     return (
-        <section className={`${styles["booking-status-form-section"]}`}>
+        <section className={`${styles["booking-status-reference-section"]}`}>
             <div>
                 <p>Please Enter Your Reference Number</p>
                 <input placeholder="Enter Your Reference Number" />
@@ -12,4 +12,4 @@ const BookingStatusForm = () => {
     );
 };
 
-export default BookingStatusForm;
+export default BookingStatusReference;
