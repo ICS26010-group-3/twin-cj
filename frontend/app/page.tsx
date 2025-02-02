@@ -14,6 +14,7 @@ import BookingStatusDetails from "./components/BookingStatusDetails";
 import BookingStatusIntro from "./components/BookingStatusIntro";
 import BookingStatusPrintButton from "./components/BookingStatusPrintButton";
 import BookingStatusReference from "./components/BookingStatusReference";
+import BookingStatusDetailsReupload from "./components/BookingStatusReupload";
 import HeroImage from "./components/HeroImage";
 import styles from "./page.module.scss";
 
@@ -23,8 +24,9 @@ export default function Home() {
       <HeroImage imageURL="View Booking Status Hero.png" />
       <BookingStatusIntro />
       <BookingStatusReference />
-      <BookingStatusDetails />
+      <BookingStatusDetails headingTitle="Oops! There was an issue with your Booking :(" headingDescription="Unfortunately, your booking request has been rejected due to an issue with the payment verification process." status="Re-upload Payment Screenshot" statusColor="red" />
       <BookingStatusPrintButton />
+      <BookingStatusDetailsReupload />
     </div>
   );
 }

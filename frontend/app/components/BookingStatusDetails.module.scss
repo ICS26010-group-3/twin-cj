@@ -19,7 +19,7 @@
     padding-bottom: 20px;
 }
 
-.booking-status-details-section h3 {
+.booking-status-details-container-heading h3 {
     font-size: 25px;
     color: #D9AD7C;
     font-weight: 500;
@@ -27,11 +27,13 @@
     margin-bottom: 10px;
 }
 
-.booking-status-details-section h4 {
+.booking-status-details-container-heading h4 {
     font-size: 16px;
     font-style: italic;
     font-weight: 350;
     line-height: 1.4;
+    display: inline;
+    line-height: 2 !important;
 }
 
 .booking-status-details-section hr {
@@ -52,6 +54,10 @@
 
 .booking-status-details-left {
     width: 50%;
+}
+
+.booking-status-details-left p {
+    line-height: 2;
 }
 
 .booking-status-details-right {
