@@ -24,7 +24,7 @@ export default function Home() {
       <HeroImage imageURL="View Booking Status Hero.png" />
       <BookingStatusIntro />
       <BookingStatusReference />
-      <BookingStatusDetails headingTitle="Oops! There was an issue with your Booking :(" headingDescription="Unfortunately, your booking request has been rejected due to an issue with the payment verification process." status="Re-upload Payment Screenshot" statusColor="red" />
+      <BookingStatusDetails headingTitle="You’re officially booked!" headingDescription="Thank you for choosing us for your stay! Below are your booking details:" status="Approved Downpayment" statusColor="green" />
       <BookingStatusPrintButton />
       <BookingStatusDetailsReupload />
     </div>
