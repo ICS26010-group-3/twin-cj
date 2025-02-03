@@ -12,7 +12,7 @@ export default function Home() {
       <HeroImage imageURL="View Booking Status Hero.png" />
       <BookingStatusIntro />
       <BookingStatusReference />
-      <BookingStatusDetails headingTitle="You’re officially booked!" headingDescription="Thank you for choosing us for your stay! Below are your booking details:" status="Approved Downpayment" statusColor="green" />
+      <BookingStatusDetails status="Approved" />
       <BookingStatusPrintButton />
       <BookingStatusDetailsReupload />
     </div>
