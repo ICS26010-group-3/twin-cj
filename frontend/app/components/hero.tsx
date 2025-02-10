@@ -3,16 +3,18 @@ import styles from "./hero.module.scss";
 interface HeroProps {
     imageURL: string;
     children?: React.ReactNode;
-    height?: string; // Fix: Added height as an optional prop
+    height?: string;
+    marginBottom?: string;
 }
 
-const Hero: React.FC<HeroProps> = ({ imageURL, children, height }) => {
+const Hero: React.FC<HeroProps> = ({ imageURL, children, height, marginBottom }) => {
     return (
         <section 
             className={styles.hero} 
             style={{ 
                 backgroundImage: `url(${imageURL})`, 
-                height: height
+                height: height,
+                marginBottom: marginBottom
             }}
         >
             {children}
