@@ -3,6 +3,7 @@ import { OK } from "../constants/http";
 import authRoutes from "./auth.routes";
 import userRoutes from "./user.routes";
 import feedbackRoutes from "./feedback.routes";
+import serviceRoutes from "./service.routes";
 import { authenticate } from "../middlewares/auth.middleware";
 
 const router = Router();
@@ -19,6 +20,7 @@ router.get("/health", (request: Request, response: Response) => {
 router.use("/auth", authRoutes);
 router.use("/users", authenticate, userRoutes);
 router.use("/feedbacks", feedbackRoutes);
+router.use("/services", serviceRoutes);
 
 router.get("/auth-test", authenticate, (req, res) => {
   res.json({
