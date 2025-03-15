@@ -14,9 +14,11 @@ export default function PaymentDetails() {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [isMobileScreen, setIsMobileScreen] = useState(false);
   const [isTabletScreen, setIsTabletScreen] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<string>("");
+  const [file, setFile] = useState<File | null>(null);
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
 
   // Responsiveness for the cancellation policy container
-
   useEffect(() => {
     const handleResize = () => {
       setIsMediumScreen(window.innerWidth <= 1550);
@@ -32,6 +34,41 @@ export default function PaymentDetails() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  // Handle payment method change
+  const handlePaymentMethodChange = (method: string) => {
+    setPaymentMethod(method);
+  };
+
+  // Handle file upload
+  const handleFileUpload = (file: File | null) => {
+    if (file) {
+      const validTypes = ["image/jpeg", "image/jpg", "image/png"];
+      if (validTypes.includes(file.type) && file.size <= 1048576) {
+        setFile(file);
+      } else {
+        alert(
+          "Please upload a valid JPEG, JPG, or PNG file with a maximum size of 1MB."
+        );
+        setFile(null);
+      }
+    } else {
+      setFile(null);
+    }
+  };
+
+  // Validate form
+  useEffect(() => {
+    const validateForm = () => {
+      if (paymentMethod && file) {
+        setIsFormValid(true);
+      } else {
+        setIsFormValid(false);
+      }
+    };
+
+    validateForm();
+  }, [paymentMethod, file]);
 
   return (
     <div className={styles.paymentContainer}>
@@ -58,6 +95,8 @@ export default function PaymentDetails() {
           />
           <SelectPayment
             className={`${styles.leftContainer} ${styles.container4}`}
+            onPaymentMethodChange={handlePaymentMethodChange}
+            onFileUpload={handleFileUpload}
           />
           <PaymentContainer
             className={`${styles.rightContainer} ${styles.container5}`}
@@ -85,7 +124,11 @@ export default function PaymentDetails() {
             }
           />
         </div>
-        <BookingButton text="CONFIRM BOOKING" onClick={() => {}} />
+        <BookingButton
+          text="CONFIRM BOOKING"
+          onClick={() => {}}
+          disabled={!isFormValid}
+        />
       </div>
     </div>
   );

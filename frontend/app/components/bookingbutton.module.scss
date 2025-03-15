@@ -18,6 +18,7 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-top: 20px;
 
   &:hover:not(:disabled) {
     background-color: darken(#d9ad7c, 10%);
