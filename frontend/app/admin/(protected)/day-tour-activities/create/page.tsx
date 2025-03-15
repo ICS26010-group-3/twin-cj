@@ -99,32 +99,36 @@ function Page() {
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value, files } = e.target as HTMLInputElement;
-      const trimmedValue = value.trim();
+
+      const trimmedValue = value.replace(/^\s+/, "");
+
+      const formattedValue =
+        name === "price" || name === "additionalFeeAmount"
+          ? trimmedValue.replace(/[^0-9]/g, "") //
+          : trimmedValue;
 
       setFormData((prevData) => ({
         ...prevData,
-        [name]: files ? files[0] : value,
+        [name]: files ? files[0] : formattedValue,
       }));
-
-      const isFilled = (val: string) => val.trim().length > 0;
 
       setHelperText((prevHelperText) => ({
         ...prevHelperText,
         [name]:
-          name === "name"
-            ? trimmedValue.length === 0 || trimmedValue.length > 50
+          formattedValue.length === 0
+            ? false
+            : name === "name"
+            ? formattedValue.length >= 50
             : name === "description"
-            ? trimmedValue.length === 0 || trimmedValue.length > 100
+            ? formattedValue.length >= 100
             : name === "price"
-            ? !/^\d+(\.\d+)?$/.test(trimmedValue) ||
-              parseFloat(trimmedValue) <= 0
+            ? !/^\d+$/.test(formattedValue) || parseFloat(formattedValue) <= 0
             : name === "additionalFeeType"
-            ? trimmedValue.length === 0
+            ? false
             : name === "additionalFeeDescription"
-            ? trimmedValue.length === 0
+            ? false
             : name === "additionalFeeAmount"
-            ? !/^\d+(\.\d+)?$/.test(trimmedValue) ||
-              parseFloat(trimmedValue) <= 0
+            ? !/^\d+$/.test(formattedValue) || parseFloat(formattedValue) <= 0
             : false,
       }));
     },
@@ -282,7 +286,7 @@ function Page() {
               )}
             </div>
             <button type="submit" disabled={!isFormValid}>
-              Submit
+              Create Day Tour
             </button>
             <button
               type="button"
