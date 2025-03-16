@@ -83,64 +83,56 @@
   font-size: var(--text-size-base);
   font-style: normal;
   font-weight: 300;
-
   margin: 25px 0 10px 10px;
 }
 
-.fileUpload {
-  display: inline-block;
-  position: relative;
-  cursor: pointer;
+.dragDropArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+  border: 2px dashed #007bff;
   border-radius: 10px;
-  border: 1px solid rgba(22, 22, 22, 0.4);
-  background-color: #fff;
-  padding: 10px 20px;
-  border-radius: 4px;
-  font-size: 16px;
-  text-align: center;
-  margin: 10px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 99%;
+  margin: 20px 10px 10px 10px;
+
+  &:hover {
+    border-color: #0056b3;
+    background-color: #e9f5ff;
+  }
 }
 
-.fileUpload input[type="file"] {
-  display: none;
+.uploadPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
 }
 
 .uploadText {
-  display: flex;
-  align-items: center;
-}
-
-.uploadText i {
-  margin-right: 8px;
-}
-
-.uploadIcon {
-  padding-right: 5px;
-}
-
-.uploadSubtext {
   font-size: var(--text-size-sm);
-  color: #000;
-  font-family: "Open Sans";
-  font-weight: 300;
-  font-style: italic;
-  margin-left: 8px;
-}
-
-.uploadContainer {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  color: #555;
+  margin: 0;
 }
 
 .imagePreview {
   position: relative;
-  display: inline-block;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .uploadedImage {
-  width: 40px;
-  height: 40px;
+  max-width: 100%;
+  max-height: 300px;
   border-radius: 5px;
   object-fit: cover;
 }
@@ -149,7 +141,7 @@
   position: absolute;
   top: -10px;
   right: -10px;
-  background-color: red;
+  background-color: #ff4d4d;
   color: white;
   border: none;
   border-radius: 50%;
@@ -161,6 +153,20 @@
   justify-content: center;
   font-size: 12px;
   padding: 0;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #cc0000;
+  }
+}
+
+.uploadSubtext {
+  font-size: var(--text-size-sm);
+  color: #000;
+  font-family: "Open Sans";
+  font-weight: 300;
+  font-style: italic;
+  margin-left: 8px;
 }
 
 @media screen and (max-width: 1550px) {
@@ -199,5 +205,9 @@
     min-width: 200px;
     max-width: 600px;
     padding: 25px 30px;
+  }
+
+  .uploadedImage {
+    max-height: 200px;
   }
 }

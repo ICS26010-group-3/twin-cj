@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
+import { useDropzone } from "react-dropzone";
 import styles from "./selectPayment.module.scss";
 
 interface SelectPaymentProps {
@@ -29,8 +30,7 @@ const SelectPayment: React.FC<SelectPaymentProps> = ({
     setPaymentMethodError("");
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const uploadedFile = event.target.files?.[0];
+  const handleFileUpload = (uploadedFile: File | null) => {
     if (uploadedFile) {
       const validTypes = ["image/jpeg", "image/jpg", "image/png"];
       if (
@@ -49,26 +49,43 @@ const SelectPayment: React.FC<SelectPaymentProps> = ({
         setFilePreview(null);
         onFileUpload(null);
       }
+    } else {
+      setFile(null);
+      setFilePreview(null);
+      onFileUpload(null);
     }
   };
 
   const handleRemoveImage = () => {
-    setFile(null);
-    setFilePreview(null);
-    onFileUpload(null);
+    handleFileUpload(null);
   };
 
-  const validateFields = () => {
-    if (!paymentMethod && file) {
-      setPaymentMethodError("Please select a payment method.");
-    }
-    if (!file && paymentMethod) {
-      setFileError("Please upload a proof of payment.");
-    }
-  };
+  // DROPZONE LOGIC
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const uploadedFile = acceptedFiles[0];
+      handleFileUpload(uploadedFile);
+    },
+    [handleFileUpload]
+  );
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: { "image/jpeg": [".jpeg", ".jpg"], "image/png": [".png"] },
+    maxSize: 1048576, // 1 mb
+  });
 
   // validation fields when the user interacts with the form
   React.useEffect(() => {
+    const validateFields = () => {
+      if (!paymentMethod && file) {
+        setPaymentMethodError("Please select a payment method.");
+      }
+      if (!file && paymentMethod) {
+        setFileError("Please upload a proof of payment.");
+      }
+    };
+
     validateFields();
   }, [paymentMethod, file]);
 
@@ -117,31 +134,9 @@ const SelectPayment: React.FC<SelectPaymentProps> = ({
         Please upload your proof of payment here{" "}
         <span className={styles.required}>*</span>
       </h3>
-      <div className={styles.uploadContainer}>
-        <label className={styles.fileUpload}>
-          <input
-            type="file"
-            accept=".jpg,.jpeg,.png"
-            onChange={handleFileChange}
-          />
-          <span className={styles.uploadText}>
-            <svg
-              className={styles.uploadIcon}
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 23 21"
-              fill="none"
-            >
-              <path
-                d="M7.7165 5.99176L10.35 3.57616V13.6482C10.35 13.9267 10.4712 14.1939 10.6868 14.3908C10.9025 14.5878 11.195 14.6984 11.5 14.6984C11.805 14.6984 12.0975 14.5878 12.3132 14.3908C12.5288 14.1939 12.65 13.9267 12.65 13.6482V3.57616L15.2835 5.99176C15.3904 6.0902 15.5176 6.16833 15.6577 6.22165C15.7979 6.27497 15.9482 6.30242 16.1 6.30242C16.2518 6.30242 16.4021 6.27497 16.5423 6.22165C16.6824 6.16833 16.8096 6.0902 16.9165 5.99176C17.0243 5.89412 17.1098 5.77796 17.1682 5.64998C17.2266 5.52199 17.2567 5.38472 17.2567 5.24607C17.2567 5.10743 17.2266 4.97015 17.1682 4.84217C17.1098 4.71418 17.0243 4.59802 16.9165 4.50039L12.3165 0.299339C12.2071 0.203722 12.0782 0.12877 11.937 0.0787838C11.657 -0.0262613 11.343 -0.0262613 11.063 0.0787838C10.9218 0.12877 10.7929 0.203722 10.6835 0.299339L6.0835 4.50039C5.97628 4.59831 5.89122 4.71457 5.83319 4.84251C5.77516 4.97046 5.74529 5.10759 5.74529 5.24607C5.74529 5.38456 5.77516 5.52169 5.83319 5.64963C5.89122 5.77758 5.97628 5.89383 6.0835 5.99176C6.19072 6.08968 6.31802 6.16736 6.45811 6.22036C6.59821 6.27335 6.74836 6.30063 6.9 6.30063C7.05164 6.30063 7.20179 6.27335 7.34189 6.22036C7.48198 6.16736 7.60928 6.08968 7.7165 5.99176ZM21.85 10.4974C21.545 10.4974 21.2525 10.608 21.0368 10.805C20.8212 11.002 20.7 11.2691 20.7 11.5476V17.8492C20.7 18.1278 20.5788 18.3949 20.3632 18.5919C20.1475 18.7888 19.855 18.8995 19.55 18.8995H3.45C3.145 18.8995 2.85249 18.7888 2.63683 18.5919C2.42116 18.3949 2.3 18.1278 2.3 17.8492V11.5476C2.3 11.2691 2.17884 11.002 1.96317 10.805C1.74751 10.608 1.455 10.4974 1.15 10.4974C0.845001 10.4974 0.552494 10.608 0.336827 10.805C0.12116 11.002 0 11.2691 0 11.5476V17.8492C0 18.6849 0.363481 19.4863 1.01048 20.0772C1.65748 20.668 2.535 21 3.45 21H19.55C20.465 21 21.3425 20.668 21.9895 20.0772C22.6365 19.4863 23 18.6849 23 17.8492V11.5476C23 11.2691 22.8788 11.002 22.6632 10.805C22.4475 10.608 22.155 10.4974 21.85 10.4974Z"
-                fill="#555555"
-              />
-            </svg>
-            Upload
-          </span>
-        </label>
-        {filePreview && (
+      <div {...getRootProps()} className={styles.dragDropArea}>
+        <input {...getInputProps()} />
+        {filePreview ? (
           <div className={styles.imagePreview}>
             <img
               src={filePreview}
@@ -155,6 +150,24 @@ const SelectPayment: React.FC<SelectPaymentProps> = ({
               &times;
             </button>
           </div>
+        ) : (
+          <div className={styles.uploadPlaceholder}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="40"
+              height="40"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M19 10C18.7348 10 18.4804 10.1054 18.2929 10.2929C18.1054 10.4804 18 10.7348 18 11V14.38L16.52 12.9C15.9974 12.3815 15.2911 12.0906 14.555 12.0906C13.8189 12.0906 13.1126 12.3815 12.59 12.9L11.89 13.61L9.41 11.12C8.88742 10.6015 8.18113 10.3106 7.445 10.3106C6.70887 10.3106 6.00258 10.6015 5.48 11.12L4 12.61V7C4 6.73478 4.10536 6.48043 4.29289 6.29289C4.48043 6.10536 4.73478 6 5 6H13C13.2652 6 13.5196 5.89464 13.7071 5.70711C13.8946 5.51957 14 5.26522 14 5C14 4.73478 13.8946 4.48043 13.7071 4.29289C13.5196 4.10536 13.2652 4 13 4H5C4.20435 4 3.44129 4.31607 2.87868 4.87868C2.31607 5.44129 2 6.20435 2 7V19.22C2.00264 19.9565 2.29637 20.6621 2.81715 21.1828C3.33794 21.7036 4.04351 21.9974 4.78 22H17.22C17.491 21.9978 17.7603 21.9574 18.02 21.88C18.5974 21.718 19.1058 21.3711 19.4671 20.8924C19.8283 20.4137 20.0226 19.8297 20.02 19.23V11C20.02 10.867 19.9935 10.7353 19.942 10.6126C19.8905 10.49 19.8151 10.3789 19.7201 10.2857C19.6251 10.1926 19.5125 10.1194 19.3888 10.0703C19.2652 10.0212 19.133 9.99734 19 10ZM5 20C4.73478 20 4.48043 19.8946 4.29289 19.7071C4.10536 19.5196 4 19.2652 4 19V15.43L6.89 12.54C7.03615 12.3947 7.23389 12.3131 7.44 12.3131C7.64611 12.3131 7.84385 12.3947 7.99 12.54L15.46 20H5ZM18 19C17.9936 19.1936 17.931 19.3812 17.82 19.54L13.3 15L14.01 14.3C14.0817 14.2268 14.1673 14.1687 14.2617 14.129C14.3561 14.0893 14.4576 14.0689 14.56 14.0689C14.6624 14.0689 14.7639 14.0893 14.8583 14.129C14.9527 14.1687 15.0383 14.2268 15.11 14.3L18 17.21V19ZM21 4H20V3C20 2.73478 19.8946 2.48043 19.7071 2.29289C19.5196 2.10536 19.2652 2 19 2C18.7348 2 18.4804 2.10536 18.2929 2.29289C18.1054 2.48043 18 2.73478 18 3V4H17C16.7348 4 16.4804 4.10536 16.2929 4.29289C16.1054 4.48043 16 4.73478 16 5C16 5.26522 16.1054 5.51957 16.2929 5.70711C16.4804 5.89464 16.7348 6 17 6H18V7C18 7.26522 18.1054 7.51957 18.2929 7.70711C18.4804 7.89464 18.7348 8 19 8C19.2652 8 19.5196 7.89464 19.7071 7.70711C19.8946 7.51957 20 7.26522 20 7V6H21C21.2652 6 21.5196 5.89464 21.7071 5.70711C21.8946 5.51957 22 5.26522 22 5C22 4.73478 21.8946 4.48043 21.7071 4.29289C21.5196 4.10536 21.2652 4 21 4Z"
+                fill="gray"
+              />
+            </svg>
+            <p className={styles.uploadText}>
+              Drag and drop or click to upload (JPEG, JPG, PNG, max 1MB)
+            </p>
+          </div>
         )}
       </div>
       {file && (
@@ -162,7 +175,7 @@ const SelectPayment: React.FC<SelectPaymentProps> = ({
       )}
       {fileError && <p className={styles.errorText}>{fileError}</p>}
       <br></br>
-      <h5 className={styles.uploadSubtext}>Max file size accepted is 1 MB.</h5>
+      {/* <h5 className={styles.uploadSubtext}>Max file size accepted is 1 MB.</h5> */}
     </div>
   );
 };
