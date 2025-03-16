@@ -140,33 +140,31 @@ const Form: React.FC<EditUserFormArg> = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     let updatedValue = value;
-
+  
     if (name === "phoneNumber") {
       updatedValue = value.replace(/\D/g, "").slice(0, 11);
     }
-
+  
     if (name === "firstName" || name === "lastName") {
       updatedValue = value.replace(/[^a-zA-Z\s]/g, "").slice(0, 50);
     }
+  
+    const newErrors = {
+      ...errors,
+      firstName: name === "firstName" ? !validateName(updatedValue) : errors.firstName,
+      lastName: name === "lastName" ? !validateName(updatedValue) : errors.lastName,
+      email: name === "email" ? (updatedValue !== "" && !validateEmail(updatedValue)) : errors.email,
+      phoneNumber: name === "phoneNumber" ? updatedValue.length !== 11 : errors.phoneNumber,
+    };
+  
+    setErrors(newErrors);
+    setFormData((prev) => ({ ...prev, [name]: updatedValue }));
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: updatedValue,
-    }));
-
-    setErrors((prev) => ({
-      ...prev,
-      firstName: name === "firstName" && !validateName(updatedValue),
-      lastName: name === "lastName" && !validateName(updatedValue),
-      email:
-        name === "email" && updatedValue !== "" && !validateEmail(updatedValue),
-      phoneNumber: name === "phoneNumber" && updatedValue.length !== 11,
-    }));
-
-    setIsFormValid(Object.values(errors).some((error) => error));
+    setIsFormValid(!Object.values(newErrors).some(Boolean));
+  
     setIsFormTouched(true);
   };
-
+  
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.form_group}>

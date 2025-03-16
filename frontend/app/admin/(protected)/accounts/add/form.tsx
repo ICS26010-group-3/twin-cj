@@ -21,14 +21,38 @@ const Form: React.FC = () => {
   const router = useRouter();
   const { trigger } = useSWRMutation(
     "register",
-    (key, { arg }: { arg: RegisterUserArg }) => register(arg),
+    async (key, { arg }: { arg: RegisterUserArg }) => {
+      try {
+        return await register(arg);
+      } catch (error: any) {
+        if (error.response?.status === 409) {
+          const message = error.response?.data?.message || "Email or Phone Number already in use.";
+  
+          setErrors((prev) => ({
+            ...prev,
+            emailInUse: message.includes("Email"),
+            phoneNumberInUse: message.includes("Phone"),
+          }));
+  
+          setFormData((prev) => ({ ...prev })); 
+  
+          return; 
+        }
+        throw error;
+      }
+    },
     {
       onSuccess: () => {
-        localStorage.setItem("adminAdded", "true"); 
-        router.push("/admin/accounts"); 
+        localStorage.setItem("adminAdded", "true");
+        router.push("/admin/accounts");
       },
+      onError: (error) => {
+        alert(error.message); 
+      }
     }
   );
+  
+  
   
   const [formData, setFormData] = useState({
     firstName: "",
@@ -77,14 +101,17 @@ const Form: React.FC = () => {
         confirmPassword: "",
       });
   
-      setErrors({
+      setErrors((prev) => ({
         firstName: false,
         lastName: false,
         email: false,
+        emailInUse: prev.emailInUse, 
         phoneNumber: false,
+        phoneNumberInUse: prev.phoneNumberInUse, 
         password: false,
         confirmPassword: false,
-      });
+      }));
+      
   
       setPasswordValidations({
         length: false,
@@ -110,10 +137,13 @@ const Form: React.FC = () => {
     firstName: false,
     lastName: false,
     email: false,
+    emailInUse: false, 
     phoneNumber: false,
+    phoneNumberInUse: false, 
     password: false,
     confirmPassword: false,
   });
+  
 
   const [passwordValidations, setPasswordValidations] = useState({
     length: false,
@@ -130,7 +160,7 @@ const Form: React.FC = () => {
   const [hasTypedConfirmPassword, setHasTypedConfirmPassword] = useState(false);
 
   const validateEmail = (email: string) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
 
   const validatePassword = (password: string) => {
     const validations = {
@@ -151,17 +181,17 @@ const Form: React.FC = () => {
     let updatedValue = value;
 
     if (name === "phoneNumber") {
-        updatedValue = value.replace(/\D/g, "").slice(0, 11); 
+      updatedValue = value.replace(/\D/g, "").slice(0, 11); 
     } else if (name === "firstName" || name === "lastName") {
         updatedValue = value.replace(/[^a-zA-Z\s]/g, "").slice(0, 50); 
     }
 
     setFormData((prev) => {
-        if (prev[name as keyof typeof formData] === updatedValue) return prev;
+      if (prev[name as keyof typeof formData] === updatedValue) return prev;
 
-        const updatedFormData = { ...prev, [name]: updatedValue };
+      const updatedFormData = { ...prev, [name]: updatedValue };
 
-        if (!isFormTouched) setIsFormTouched(true);
+      if (!isFormTouched) setIsFormTouched(true);
 
         if (name === "password") {
             validatePassword(updatedValue);
@@ -187,16 +217,17 @@ const Form: React.FC = () => {
     });
 
     setErrors((prev) => ({
-        ...prev,
-        firstName: name === "firstName" && !/^[A-Za-z\s]{2,}$/.test(updatedValue),
-        lastName: name === "lastName" && !/^[A-Za-z\s]{2,}$/.test(updatedValue),
-        email: name === "email" && !validateEmail(updatedValue),
-        phoneNumber: name === "phoneNumber" && updatedValue.length > 0 && updatedValue.length !== 11,
-        password:
-            name === "password" &&
-            !Object.values(passwordValidations).every(Boolean),
-        confirmPassword: name === "confirmPassword" && updatedValue !== formData.password,
+      ...prev,
+      firstName: name === "firstName" && !/^[A-Za-z]{2,}(?: [A-Za-z]+)*$/.test(updatedValue.trim()),
+      lastName: name === "lastName" && !/^[A-Za-z]{2,}(?: [A-Za-z]+)*$/.test(updatedValue.trim()),
+      email: name === "email" && !validateEmail(updatedValue),
+      emailInUse: name === "email" ? false : prev.emailInUse, 
+      phoneNumber: name === "phoneNumber" && updatedValue.length > 0 && updatedValue.length !== 11,
+      phoneNumberInUse: name === "phoneNumber" ? false : prev.phoneNumberInUse, 
+      password: name === "password" && !Object.values(passwordValidations).every(Boolean),
+      confirmPassword: name === "confirmPassword" && updatedValue !== formData.password,
     }));
+    
 };
 
   const isFormValid = () => {
@@ -287,41 +318,47 @@ const Form: React.FC = () => {
         )}
       </div>
 
-      {/* Email */}
-      <div className={styles.form_group}>
-        <label>
-          Email <span className={styles.required}>*</span>
-        </label>
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-          className={errors.email ? styles.invalid_input : ""}
-        />
-        {!isEmailValid && (
-          <span className={styles.error}>Invalid email address</span>
-        )}
-      </div>
+    {/* Email */}
+    <div className={styles.form_group}>
+      <label>
+        Email <span className={styles.required}>*</span>
+      </label>
+      <input
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+        required
+        className={errors.email || errors.emailInUse ? styles.invalid_input : ""}
+      />
+      {(errors.email || errors.emailInUse) && (
+        <span className={styles.error}>
+          {errors.email ? "Invalid email address" : "Email already in use"}
+        </span>
+      )}
+    </div>
 
-      {/* Phone Number */}
-      <div className={styles.form_group}>
-        <label>
-          Phone Number <span className={styles.required}>*</span>
-        </label>
-          <input
-            type="tel"
-            name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            required
-            className={errors.phoneNumber ? styles.invalid_input : ""}
-          />
-        {errors.phoneNumber && (
-          <span className={styles.error}>Must be 11 digits only.</span>
-        )}
-      </div>
+
+   {/* Phone Number */}
+    <div className={styles.form_group}>
+      <label>
+        Phone Number <span className={styles.required}>*</span>
+      </label>
+      <input
+        type="tel"
+        name="phoneNumber"
+        value={formData.phoneNumber}
+        onChange={handleChange}
+        required
+        className={errors.phoneNumber || errors.phoneNumberInUse ? styles.invalid_input : ""}
+      />
+      {(errors.phoneNumber || errors.phoneNumberInUse) && (
+        <span className={styles.error}>
+          {errors.phoneNumber ? "Must be 11 digits only" : "Phone number already in use"}
+        </span>
+      )}
+    </div>
+
 
       {/* Password */}
       <div className={styles.form_group}>

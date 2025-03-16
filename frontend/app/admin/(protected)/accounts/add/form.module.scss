@@ -74,6 +74,9 @@
     justify-content: flex-start; 
     width: 100%;
   }
+  .required {
+    color: red;
+  }
   
   @media (max-width: 768px) {
     .button_container {
