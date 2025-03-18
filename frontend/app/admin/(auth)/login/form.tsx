@@ -122,13 +122,22 @@ export function LoginForm() {
     }
   };
 
+  const handleEnterKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (!isDisabled && !isMutating) {
+        handleLogin();
+      }
+    }
+  };
+
   return (
     <>
       {isMutating ? (
         <Loading />
       ) : (
         <div className={styles["login-form-container"]}>
-          <div className={styles["login-form-wrapper"]}>
+          <div className={styles["login-form-wrapper"]} onKeyDown={handleEnterKeyDown}>
             <div className={styles["form-title"]}>
               <Image
                 src={twinCJLogo}
