@@ -192,7 +192,7 @@ export function ChangePasswordForm() {
             </small>
           )}
 
-          <div>
+          <div style={{ textAlign: "center" }}>
             <Button fullWidth={true} type="submit">
               Change Password
             </Button>
