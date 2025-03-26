@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { DownloadTableExcel } from "react-export-table-to-excel";
 import styles from "./adminBookingDataTable.module.scss";
 
 interface Booking {
@@ -17,6 +18,7 @@ interface BookingTableProps {
 }
 
 const BookingTable: React.FC<BookingTableProps> = ({ bookings }) => {
+  const tableRef = useRef<HTMLTableElement | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState({
     searchTerm: "",
@@ -117,9 +119,16 @@ const BookingTable: React.FC<BookingTableProps> = ({ bookings }) => {
               </select>
             </div>
           </div>
+          <DownloadTableExcel
+            filename="Twin CJ Booking Details"
+            sheet="bookings"
+            currentTableRef={tableRef.current}
+          >
+            <button className={styles.exportButton}>Export to Excel</button>
+          </DownloadTableExcel>
         </div>
 
-        <table className={styles.table}>
+        <table ref={tableRef} className={styles.table}>
           <thead className={styles.tableHead}>
             <tr>
               <th>Reference No.</th>
