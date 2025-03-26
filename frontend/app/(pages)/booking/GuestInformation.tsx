@@ -35,17 +35,19 @@ const GuestInformation: React.FC<GuestInformationProps> = ({
   const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
 
   // Validate First Name and Last Name (alphabetic only)
+
   const validateName = (name: string, field: "firstName" | "lastName") => {
-    const regex = /^[A-Za-z]+$/;
-    if (!regex.test(name)) {
-      if (field === "firstName") {
-        setFirstNameError("First Name should only contain letters.");
+    if (field === "firstName") {
+      const regex = /^[A-Za-z\s]+$/;
+      if (!regex.test(name)) {
+        setFirstNameError("First Name should only contain letters and spaces.");
       } else {
-        setLastNameError("Last Name should only contain letters.");
+        setFirstNameError("");
       }
     } else {
-      if (field === "firstName") {
-        setFirstNameError("");
+      const regex = /^[A-Za-z]+$/;
+      if (!regex.test(name)) {
+        setLastNameError("Last Name should only contain letters.");
       } else {
         setLastNameError("");
       }
@@ -85,7 +87,7 @@ const GuestInformation: React.FC<GuestInformationProps> = ({
 
   // Check if all fields are filled and both checkboxes are checked
   const isFormValid =
-    firstName.trim() !== "" &&
+    firstName !== "" &&
     lastName.trim() !== "" &&
     contactNumber.trim() !== "" &&
     email.trim() !== "" &&
