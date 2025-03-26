@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/app/components/loading";
 import styles from "./form.module.scss";
@@ -22,6 +22,7 @@ import {
 interface DayTourProps {
   id: string;
   defaultValues: DayTourFormData;
+  setIsFormChanged: (changed: boolean) => void;
 }
 
 const dayTourSchema = z.object({
@@ -33,7 +34,11 @@ const dayTourSchema = z.object({
 
 type DayTourFormData = z.infer<typeof dayTourSchema>;
 
-export default function EditDayTour({ id, defaultValues }: DayTourProps) {
+export default function EditDayTour({
+  id,
+  defaultValues,
+  setIsFormChanged,
+}: DayTourProps) {
   const router = useRouter();
   console.log(defaultValues);
 
@@ -50,6 +55,21 @@ export default function EditDayTour({ id, defaultValues }: DayTourProps) {
       ...defaultValues,
     },
   });
+
+  const watchedValues = watch();
+
+  useEffect(() => {
+    if (!defaultValues) return;
+
+    const hasChanges = Object.keys(defaultValues).some((key) => {
+      const defaultValue = defaultValues[key as keyof DayTourFormData];
+      const currentValue = watchedValues[key as keyof DayTourFormData];
+
+      return JSON.stringify(defaultValue) !== JSON.stringify(currentValue);
+    });
+
+    setIsFormChanged(hasChanges);
+  }, [watchedValues, defaultValues, setIsFormChanged]);
 
   const { trigger, isMutating, error } = useSWRMutation(
     "edit",

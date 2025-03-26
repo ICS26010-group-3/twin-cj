@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/app/components/loading";
 import styles from "./form.module.scss";
@@ -40,7 +40,11 @@ export const cabinFormSchema = z
 
 type AddCabinFormData = z.infer<typeof cabinFormSchema>;
 
-export default function CabinForm() {
+export default function CabinForm({
+  setIsFormChanged,
+}: {
+  setIsFormChanged: (changed: boolean) => void;
+}) {
   const router = useRouter();
 
   const {
@@ -60,6 +64,16 @@ export default function CabinForm() {
       maxCapacity: 0,
     },
   });
+
+  const watchedValues = watch();
+
+  useEffect(() => {
+    const hasChanges = Object.values(watchedValues).some(
+      (value) =>
+        value !== "" && value !== 0 && value !== null && value !== undefined
+    );
+    setIsFormChanged(hasChanges);
+  }, [watchedValues, setIsFormChanged]);
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [confirmAction, setConfirmAction] = useState<() => void>(

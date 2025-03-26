@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/app/components/loading";
 import styles from "./form.module.scss";
@@ -28,7 +28,11 @@ export const dayTourSchema = z.object({
 
 type AddDayTourData = z.infer<typeof dayTourSchema>;
 
-export default function DayTourForm() {
+export default function DayTourForm({
+  setIsFormChanged,
+}: {
+  setIsFormChanged: (changed: boolean) => void;
+}) {
   const router = useRouter();
 
   const { trigger, isMutating } = useSWRMutation(
@@ -61,6 +65,16 @@ export default function DayTourForm() {
     message: "",
     type: "success",
   });
+
+  const watchedValues = watch();
+
+  useEffect(() => {
+    const hasChanges = Object.values(watchedValues).some(
+      (value) =>
+        value !== "" && value !== 0 && value !== null && value !== undefined
+    );
+    setIsFormChanged(hasChanges);
+  }, [watchedValues, setIsFormChanged]);
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [confirmAction, setConfirmAction] = useState<() => void>(
@@ -124,7 +138,12 @@ export default function DayTourForm() {
               <label>
                 Day Tour Name <span className={styles.required}>*</span>
               </label>
-              <input type="text" {...register("name")} maxLength={51} placeholder="Enter the day tour name" />
+              <input
+                type="text"
+                {...register("name")}
+                maxLength={51}
+                placeholder="Enter the day tour name"
+              />
               {errors.name && (
                 <span className={styles.error}>{errors.name.message}</span>
               )}
@@ -134,7 +153,11 @@ export default function DayTourForm() {
               <label>
                 Description <span className={styles.required}>*</span>
               </label>
-              <textarea {...register("description")} maxLength={501} placeholder="Enter the description" />
+              <textarea
+                {...register("description")}
+                maxLength={501}
+                placeholder="Enter the description"
+              />
               {errors.description && (
                 <span className={styles.error}>
                   {errors.description.message}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/app/components/loading";
 import styles from "./form.module.scss";
@@ -12,11 +12,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import NotificationModal from "@/app/components/notification_modal";
 import useSWRMutation from "swr/mutation";
 import { updateCabin } from "@/app/lib/api";
-import { capacitySchema, descriptionSchema, fileSchema, nameSchema, priceSchema } from "@/app/lib/zodSchemas";
+import {
+  capacitySchema,
+  descriptionSchema,
+  fileSchema,
+  nameSchema,
+  priceSchema,
+} from "@/app/lib/zodSchemas";
 
 interface CabinFormProps {
   id: string;
   defaultValues: EditCabinFormData;
+  setIsFormChanged: (changed: boolean) => void;
 }
 
 export const cabinFormSchema = z
@@ -35,7 +42,11 @@ export const cabinFormSchema = z
 
 type EditCabinFormData = z.infer<typeof cabinFormSchema>;
 
-export default function CabinForm({ id, defaultValues }: CabinFormProps) {
+export default function CabinForm({
+  id,
+  defaultValues,
+  setIsFormChanged,
+}: CabinFormProps) {
   const router = useRouter();
   const { trigger, isMutating } = useSWRMutation(
     "edit",
@@ -55,6 +66,21 @@ export default function CabinForm({ id, defaultValues }: CabinFormProps) {
       ...defaultValues,
     },
   });
+
+  const watchedValues = watch();
+
+  useEffect(() => {
+    if (!defaultValues) return;
+
+    const hasChanges = Object.keys(defaultValues).some((key) => {
+      const defaultValue = defaultValues[key as keyof EditCabinFormData];
+      const currentValue = watchedValues[key as keyof EditCabinFormData];
+
+      return JSON.stringify(defaultValue) !== JSON.stringify(currentValue);
+    });
+
+    setIsFormChanged(hasChanges);
+  }, [watchedValues, defaultValues, setIsFormChanged]);
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [confirmAction, setConfirmAction] = useState<() => void>(
@@ -215,9 +241,7 @@ export default function CabinForm({ id, defaultValues }: CabinFormProps) {
             </div>
 
             <div className={styles.form_group}>
-              <label>
-                Upload Image
-              </label>
+              <label>Upload Image</label>
               <input
                 type="file"
                 onChange={(e) => {
