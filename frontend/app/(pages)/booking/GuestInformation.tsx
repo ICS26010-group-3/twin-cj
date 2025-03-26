@@ -45,7 +45,7 @@ const GuestInformation: React.FC<GuestInformationProps> = ({
         setFirstNameError("");
       }
     } else {
-      const regex = /^[A-Za-z]+$/;
+      const regex = /^[A-Za-z\s]+$/;
       if (!regex.test(name)) {
         setLastNameError("Last Name should only contain letters.");
       } else {
@@ -59,8 +59,10 @@ const GuestInformation: React.FC<GuestInformationProps> = ({
     const regex = /^\d+$/;
     if (!regex.test(number)) {
       setContactNumberError("Contact Number should only contain numbers.");
-    } else if (number.length > 11) {
-      setContactNumberError("Contact Number should not exceed 11 digits.");
+    } else if (!number.startsWith("09")) {
+      setContactNumberError("Contact Number must start with '09'");
+    } else if (number.length !== 11) {
+      setContactNumberError("Contact Number must be 11 digits.");
     } else {
       setContactNumberError("");
     }
@@ -88,7 +90,7 @@ const GuestInformation: React.FC<GuestInformationProps> = ({
   // Check if all fields are filled and both checkboxes are checked
   const isFormValid =
     firstName !== "" &&
-    lastName.trim() !== "" &&
+    lastName !== "" &&
     contactNumber.trim() !== "" &&
     email.trim() !== "" &&
     retypeEmail.trim() !== "" &&
@@ -127,7 +129,10 @@ const GuestInformation: React.FC<GuestInformationProps> = ({
                 setFirstName(e.target.value);
                 validateName(e.target.value, "firstName");
               }}
-              className={firstNameError ? styles.errorInput : ""}
+              className={`
+      ${firstNameError ? styles.errorInput : ""}
+      ${!firstNameError && firstName.trim() ? styles.successInput : ""}
+    `}
             />
             {firstNameError && (
               <p className={styles.errorText}>{firstNameError}</p>
@@ -143,7 +148,10 @@ const GuestInformation: React.FC<GuestInformationProps> = ({
                 setLastName(e.target.value);
                 validateName(e.target.value, "lastName");
               }}
-              className={lastNameError ? styles.errorInput : ""}
+              className={`
+      ${lastNameError ? styles.errorInput : ""}
+      ${!lastNameError && lastName.trim() ? styles.successInput : ""}
+    `}
             />
             {lastNameError && (
               <p className={styles.errorText}>{lastNameError}</p>
