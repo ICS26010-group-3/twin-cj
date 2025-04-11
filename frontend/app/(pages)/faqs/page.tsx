@@ -31,7 +31,7 @@ export default function faqs() {
           {
             title: (
               <span style={{ fontWeight: 500, fontSize: "1.1rem" }}>
-                What are the required files in uploading a Payment Screenshot?
+                What are the required files in uploading a payment screenshot?
               </span>
             ),
             content: (
@@ -59,6 +59,70 @@ export default function faqs() {
               </div>
             ),
           },
+          {
+            title: (
+              <span style={{ fontWeight: 500, fontSize: "1.1rem" }}>
+                What are the payment methods? Do you accept full cash?
+              </span>
+            ),
+            content: (
+              <div style={{ padding: "1rem 0 1rem 1.5rem" }}>
+                <p
+                  style={{
+                    marginBottom: "1rem",
+                    position: "relative",
+                    paddingLeft: "1.2rem",
+                  }}
+                >
+                  <span
+                    style={{
+                      position: "absolute",
+                      left: 0,
+                      fontSize: "2rem",
+                      lineHeight: "1.5rem",
+                      color: "#d9ad7c",
+                    }}
+                  >
+                    •
+                  </span>
+                  We require 50% initial payment through online wallets like
+                  GCash or PayMaya. The remaining balance can be settled in cash
+                  upon arrival.
+                </p>
+              </div>
+            ),
+          },
+          {
+            title: (
+              <span style={{ fontWeight: 500, fontSize: "1.1rem" }}>
+                What is your data retention policy?
+              </span>
+            ),
+            content: (
+              <div style={{ padding: "1rem 0 1rem 1.5rem" }}>
+                <p
+                  style={{
+                    marginBottom: "1rem",
+                    position: "relative",
+                    paddingLeft: "1.2rem",
+                  }}
+                >
+                  <span
+                    style={{
+                      position: "absolute",
+                      left: 0,
+                      fontSize: "2rem",
+                      lineHeight: "1.5rem",
+                      color: "#d9ad7c",
+                    }}
+                  >
+                    •
+                  </span>
+                  Our system retains all reservation records and user data indefinitely, which ensures full historical traceability that will also support our auditing, customer service, and business analysis for all of the transactions that are made in the system.
+                </p>
+              </div>
+            ),
+          },          
           {
             title: (
               <span style={{ fontWeight: 500, fontSize: "1.1rem" }}>
@@ -93,7 +157,7 @@ export default function faqs() {
           {
             title: (
               <span style={{ fontWeight: 500, fontSize: "1.1rem" }}>
-                Is pets allowed during our stay in your resort?
+                Are pets allowed during our stay in your resort?
               </span>
             ),
             content: (
@@ -156,7 +220,7 @@ export default function faqs() {
           {
             title: (
               <span style={{ fontWeight: 500, fontSize: "1.1rem" }}>
-                Does resort offer wifi? Is it free or there are additional fee?
+                Does the resort offer Wi-Fi? Is it free or are there any additional fees?
               </span>
             ),
             content: (
@@ -181,39 +245,6 @@ export default function faqs() {
                   </span>
                   Yes, we offer free WiFi for guests who have completed their
                   booking, though coverage may be limited in some areas.
-                </p>
-              </div>
-            ),
-          },
-          {
-            title: (
-              <span style={{ fontWeight: 500, fontSize: "1.1rem" }}>
-                What are the payment methods? Do you accept full cash?
-              </span>
-            ),
-            content: (
-              <div style={{ padding: "1rem 0 1rem 1.5rem" }}>
-                <p
-                  style={{
-                    marginBottom: "1rem",
-                    position: "relative",
-                    paddingLeft: "1.2rem",
-                  }}
-                >
-                  <span
-                    style={{
-                      position: "absolute",
-                      left: 0,
-                      fontSize: "2rem",
-                      lineHeight: "1.5rem",
-                      color: "#d9ad7c",
-                    }}
-                  >
-                    •
-                  </span>
-                  We require 50% initial payment through online wallets like
-                  GCash or PayMaya. The remaining balance can be settled in cash
-                  upon arrival.
                 </p>
               </div>
             ),
