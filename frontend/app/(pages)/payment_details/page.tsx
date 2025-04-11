@@ -178,12 +178,12 @@ export default function PaymentDetails() {
                       <span>09175599237</span>
                     </div>
                   </li>
-                  <li>
+                  {/* <li>
                     <div className={styles.paymentMethod}>
                       <strong>Bank Transfer:</strong>
                       <span>XXXX-XXXX-XXXX-XXXX</span>
                     </div>
-                  </li>
+                  </li> */}
                 </ul>
                 <p className={styles.note}></p>
               </div>
@@ -195,7 +195,7 @@ export default function PaymentDetails() {
             errors={errors}
             setValue={setValue}
           />
-          <PaymentContainer
+          {/* <PaymentContainer
             className={`${styles.rightContainer} ${styles.container5}`}
             style={
               isMobileScreen
@@ -219,7 +219,7 @@ export default function PaymentDetails() {
                 be accommodated upon review.
               </>
             }
-          />
+          /> */}
         </div>
         <BookingButton
           text="CONFIRM BOOKING"

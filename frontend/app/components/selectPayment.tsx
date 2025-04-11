@@ -38,21 +38,14 @@ const SelectPayment: React.FC<SelectPaymentProps> = ({
         <option value="CreditCard">Credit Card</option>
       </select>
       <h3 className={styles.subheading}>
-        Please upload your proof of payment here{" "}
+        Please upload your proof of payment here (.jpeg, .jpg, .png, .heic){" "}
         <span className={styles.required}>*</span>
       </h3>
-
-      <label
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        htmlFor="file"
-      >
-        Upload file
-      </label>
       <input
         className={styles.file}
         id="file"
         type="file"
-        accept=".jpg,.jpeg,.png,.heic,.webp"
+        accept=".jpg,.jpeg,.png,.heic"
         onChange={(e) => {
           if (e.target.files?.[0]) {
             setValue("proofOfPayment", e.target.files[0]); // Manually set value
