@@ -181,10 +181,12 @@ type BookingStatus = {
   createdAt: Date;
   updatedAt: Date;
 };
-// Booking Status API
 
-export const getBookingStatus = async () =>
-  API.get<BookingStatus[]>("/api/bookings/statuses");
+// Booking Status API
+export const getBookingStatus = async (): Promise<BookingStatus[]> => {
+  const response = await API.get<BookingStatus[]>("/api/bookings/statuses");
+  return response.data;
+};
 
 export const editBookingStatus = async (
   referenceCode: string,

@@ -196,7 +196,7 @@ const GuestInformation: React.FC<GuestInformationProps> = ({
                 type="button"
                 className={styles.sendOtpButton}
                 onClick={() => handleSendOTP(watch("email"))}
-                disabled={!isEmailValid}
+                disabled={!isEmailValid || otpSent}
               >
                 Verify Email
               </button>

@@ -25,6 +25,15 @@ interface BookingCardData {
   isBooked?: boolean;
 }
 
+interface BookingDetails {
+  guestCounts?: { adults: number; children: number };
+  contactNumber?: string;
+  specialRequest?: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+}
+
 interface BookingTypeData {
   services: BookingCardData[];
 }
@@ -91,7 +100,7 @@ const Booking: React.FC = () => {
     }
   }, [data, bookingData.bookingType]);
 
-  const handleConfirmBooking = (bookingDetails: any) => {
+  const handleConfirmBooking = (bookingDetails: BookingDetails) => {
     const bookingPayload = {
       ...bookingData,
       guestCounts: bookingDetails.guestCounts || bookingData.guestCounts,
@@ -108,7 +117,10 @@ const Booking: React.FC = () => {
     router.push("/payment_details");
   };
 
-  const handleChange = (key: string, value: any) => {
+  const handleChange = (
+    key: keyof typeof bookingData,
+    value: (typeof bookingData)[keyof typeof bookingData]
+  ) => {
     setBookingData((prev) => ({
       ...prev,
       [key]: value,

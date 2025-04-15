@@ -165,10 +165,6 @@ const Header: React.FC<HeaderProps> = ({ onCheckAvailability }) => {
 
     setIsLoading(true);
 
-    const queryParams = new URLSearchParams({
-      checkInDate: new Date(checkInDate).toISOString(),
-      checkOutDate: new Date(checkOutDate).toISOString(),
-    }).toString();
     const url = `http://localhost:8080/api/bookings?type=cabins&checkInDate=${checkInDate.toISOString()}&checkOutDate=${checkOutDate.toISOString()}&_=${new Date().getTime()}`;
 
     try {
@@ -262,6 +258,7 @@ const Header: React.FC<HeaderProps> = ({ onCheckAvailability }) => {
           <button
             className={styles["check-availability-btn"]}
             onClick={handleCheckAvailability}
+            disabled={isLoading}
           >
             CHECK AVAILABILITY
           </button>

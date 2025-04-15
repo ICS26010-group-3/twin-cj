@@ -10,6 +10,8 @@ interface ConfirmModalProps {
   cancelText?: string;
   children?: React.ReactNode;
   className?: string;
+  confirmColor?: string;
+  cancelColor?: string;
 }
 
 const ConfirmModal: React.FC<ConfirmModalProps> = ({
