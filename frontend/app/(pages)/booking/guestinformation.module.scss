@@ -102,6 +102,12 @@
       border: 1px solid var(--color-amber-400, #de954a);
     }
   }
+  input:read-only {
+    background-color: gray !important;
+    border: 1px solid #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
 
   .errorInput {
     border: 1px solid red;
