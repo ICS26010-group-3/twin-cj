@@ -190,6 +190,7 @@ const GuestInformation: React.FC<GuestInformationProps> = ({
                 placeholder="Type your Email"
                 {...register("email")}
                 className={errors.email ? styles.errorInput : ""}
+                readOnly={isEmailVerified}
               />
 
               <button
