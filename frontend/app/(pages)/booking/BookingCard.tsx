@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import Image from "next/image";
 import styles from "./bookingcard.module.scss";
 
@@ -54,4 +54,4 @@ const BookingCard: React.FC<BookingCardProps> = ({
   );
 };
 
-export default BookingCard;
+export default memo(BookingCard);

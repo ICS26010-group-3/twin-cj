@@ -121,10 +121,13 @@ const Booking: React.FC = () => {
     key: keyof typeof bookingData,
     value: (typeof bookingData)[keyof typeof bookingData]
   ) => {
-    setBookingData((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+    setBookingData((prev) => {
+      if (prev[key] === value) return prev;
+      return {
+        ...prev,
+        [key]: value,
+      };
+    });
   };
 
   if (error) return <Loading />;

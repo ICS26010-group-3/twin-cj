@@ -75,12 +75,12 @@ const VerifyOtp: React.FC = () => {
 
       if (!response.ok) throw new Error("Failed to resend OTP");
 
-      const result = await response.json();
-
       if (response.ok) {
         setModalMessage("A new OTP has been sent to your email.");
         setModalType("success");
         setShowModal(true);
+        setTimeout(() => setShowModal(false), 3000);
+
         setResendCooldown(120);
         setOtp(Array(6).fill(""));
         setValue("otp", "");
