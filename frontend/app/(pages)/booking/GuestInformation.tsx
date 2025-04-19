@@ -56,6 +56,7 @@ const GuestInformation: React.FC<GuestInformationProps> = ({
     formState: { errors },
   } = useForm<GuestInformationFormData>({
     resolver: zodResolver(guestInformationSchema),
+    mode: "onBlur",
     defaultValues: {
       isTermsChecked: false,
       isPrivacyChecked: false,
