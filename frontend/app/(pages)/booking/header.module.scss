@@ -110,6 +110,12 @@
   }
 }
 
+.required {
+  color: red;
+  margin-left: 2px;
+  font-size: 0.8rem;
+}
+
 .check-availability-btn {
   flex: 1;
   width: 15vw;
