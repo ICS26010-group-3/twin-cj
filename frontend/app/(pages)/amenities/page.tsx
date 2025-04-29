@@ -13,6 +13,7 @@ import riverImage from "@/public/assets/amenities_river.jpg";
 import kitchenImage from "@/public/assets/amenities_kitchen.png";
 import campingImage from "@/public/assets/amenities_camping.png";
 import gazeboImage from "@/public/assets/amenities_gazebo.jpg";
+import amenitiesImage from "@/public/assets/amenities-image.png";
 import galleryVentiImage from "@/public/assets/amenities-venti-1.png";
 import galleryVentiImage2 from "@/public/assets/amenities-venti-2.png";
 import galleryVentiImage3 from "@/public/assets/amenities-venti-3.png";
