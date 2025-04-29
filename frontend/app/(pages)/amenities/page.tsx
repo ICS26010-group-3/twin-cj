@@ -102,11 +102,7 @@ export default function Amenities() {
         "Additional guests - ₱350 each",
       ],
       additionalInfo: ["1 queen-sized bed and 1 foam bed"],
-      galleryImages: [
-        galleryMiniImage,
-        galleryMiniImage2,
-        galleryMiniImage3,
-      ],
+      galleryImages: [galleryMiniImage, galleryMiniImage2, galleryMiniImage3],
     },
     {
       title: "Swimming Pool",
@@ -115,11 +111,7 @@ export default function Amenities() {
         "Dive into fun with our Swimming Pool Access, available for both day and night tours! Book a cabana or enjoy easy access to our kitchen facilities.",
       rates: [],
       additionalInfo: [],
-      galleryImages: [
-        galleryPoolImage,
-        galleryPoolImage2,
-        galleryPoolImage3,
-      ],
+      galleryImages: [galleryPoolImage, galleryPoolImage2, galleryPoolImage3],
     },
     {
       title: "River",
