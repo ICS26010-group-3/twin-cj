@@ -6,10 +6,12 @@ WORKDIR /src
 # Install ALL dependencies (including devDependencies like TypeScript)
 COPY package*.json ./
 RUN npm install
+RUN apt-get update -y && apt-get install -y openssl
 
 # Copy prisma schema and generate client
+COPY .env .env
 COPY prisma ./prisma
-RUN npx prisma generate
+RUN npx prisma generate --schema ./prisma
 
 # Copy source files
 COPY . .
