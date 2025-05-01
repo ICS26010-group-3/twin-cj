@@ -9,7 +9,7 @@ RUN npm install
 RUN apt-get update -y && apt-get install -y openssl
 
 # Copy prisma schema and generate client
-COPY .env .env
+ENV DATABASE_URL="file:twincj.db"
 COPY prisma ./prisma
 RUN npx prisma generate --schema ./prisma
 
