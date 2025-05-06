@@ -9,6 +9,7 @@ import bookingRoutes from "./booking.routes";
 import feedbackRoutes from "./feedback.routes";
 import { authenticate } from "../middlewares/auth.middleware";
 import { upload } from "../middlewares/upload";
+import botRoutes from "./bot.routes";
 
 const router = Router();
 
@@ -29,6 +30,7 @@ router.use("/inquiry", inquiryRoutes);
 router.use("/feedbacks", feedbackRoutes);
 router.use("/services", serviceRoutes);
 router.use("/bookings", bookingRoutes);
+router.use("/faqs", botRoutes);
 
 router.post("/upload", upload.single("file"), (req, res) => {
   res.json({
