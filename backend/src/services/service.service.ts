@@ -3,7 +3,6 @@ import path from "path";
 import fs from "fs";
 import appAssert from "../utils/appAssert";
 import { BAD_REQUEST, NOT_FOUND } from "../constants/http";
-import { O } from "@faker-js/faker/dist/airline-CBNP41sR";
 
 interface CreateDayTourParams {
   name: string;
@@ -180,9 +179,7 @@ export const deleteDayTour = async (id: number) => {
   const service = await prisma.service.findUnique({
     where: { id },
     include: {
-      serviceCategory: {
-        include: { category: true },
-      },
+      serviceCategory: true,
       bookings: true,
       dayTourActivities: true,
     },
@@ -207,16 +204,6 @@ export const deleteDayTour = async (id: number) => {
       where: { id: service.serviceCategory.id },
     });
 
-    const otherServiceCategories = await prisma.serviceCategory.findMany({
-      where: { categoryId: service.serviceCategory.category.id },
-    });
-
-    if (otherServiceCategories.length === 0) {
-      await prisma.category.delete({
-        where: { id: service.serviceCategory.category.id },
-      });
-    }
-
     // Delete Image
     const imagePath = path.join(
       __dirname,
@@ -237,9 +224,7 @@ export const deleteMultipleDayTour = async (ids: number[]) => {
   const services = await prisma.service.findMany({
     where: { id: { in: ids } },
     include: {
-      serviceCategory: {
-        include: { category: true },
-      },
+      serviceCategory: true,
       bookings: true,
       dayTourActivities: true,
     },
@@ -253,10 +238,6 @@ export const deleteMultipleDayTour = async (ids: number[]) => {
     .map((service) => service.serviceCategory?.id)
     .filter((id): id is number => id !== undefined);
 
-  const categoryIds = services
-    .map((service) => service.serviceCategory?.category?.id)
-    .filter((id): id is number => id !== undefined);
-
   await prisma.bookingService.deleteMany({
     where: { serviceId: { in: ids } },
   });
@@ -264,12 +245,6 @@ export const deleteMultipleDayTour = async (ids: number[]) => {
   if (serviceCategoryIds.length > 0) {
     await prisma.serviceCategory.deleteMany({
       where: { id: { in: serviceCategoryIds } },
-    });
-  }
-
-  if (categoryIds.length > 0) {
-    await prisma.category.deleteMany({
-      where: { id: { in: categoryIds } },
     });
   }
 
@@ -441,9 +416,7 @@ export const deleteCabin = async (id: number) => {
   const service = await prisma.service.findUnique({
     where: { id },
     include: {
-      serviceCategory: {
-        include: { category: true },
-      },
+      serviceCategory: true,
       bookings: true,
       dayTourActivities: true,
     },
@@ -467,16 +440,6 @@ export const deleteCabin = async (id: number) => {
     await prisma.serviceCategory.delete({
       where: { id: service.serviceCategory.id },
     });
-
-    const otherServiceCategories = await prisma.serviceCategory.findMany({
-      where: { categoryId: service.serviceCategory.category.id },
-    });
-
-    if (otherServiceCategories.length === 0) {
-      await prisma.category.delete({
-        where: { id: service.serviceCategory.category.id },
-      });
-    }
 
     // Delete Image
     const imagePath = path.join(

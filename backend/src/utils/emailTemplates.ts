@@ -486,7 +486,7 @@ Twin CJ Riverside Glamping Resort
       <p>Hi ${toTitleCase(fullName)},</p>
       <p>We hope you had a wonderful and refreshing time at Twin CJ Riverside Glamping Resort! It was truly our pleasure to have you as our guest, and we’d love to hear about your experience.</p>
       <p>Your feedback helps us grow and improve, so we’d be grateful if you could take a minute to share your thoughts.</p>
-      <p><strong>👉 <a href="localhost:3000/feedback/${referenceCode}">Click here to leave your feedback</a></strong></p>
+      <p><strong>👉 <a href="https://www.twincjresort.com/feedback/${referenceCode}">Click here to leave your feedback</a></strong></p>
       <p>It’s quick and easy — and your insights help us create even better experiences for future guests.</p>
       <p>Thank you again for choosing us for your glamping getaway. We look forward to welcoming you back soon!</p>
       <p>Warm regards,</p>

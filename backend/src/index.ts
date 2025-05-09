@@ -6,7 +6,7 @@ app.listen(config.port, () => {
   ==========================================================
     🚀 Service Name: ${config.serviceName}
     🌐 Environment: ${config.environment} 
-    🌎 URL: http://localhost:${config.port} 
+    🌎 URL: http://159.65.9.112:${config.port} 
     📅 Started at: ${new Date().toLocaleString()} 
     ✅ Status: Running
 ==========================================================

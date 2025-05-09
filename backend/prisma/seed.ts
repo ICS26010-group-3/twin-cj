@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { hashPassword } from "../src/utils/password";
 import { randomUUID } from "node:crypto";
-import { faker } from "@faker-js/faker";
 const prisma = new PrismaClient();
 async function main() {
   const hashedPassword = await hashPassword(
@@ -29,7 +28,7 @@ async function main() {
     },
   });
 
-  const categories = await prisma.category.createMany({
+  await prisma.category.createMany({
     data: [
       {
         name: "cabins",
@@ -40,15 +39,14 @@ async function main() {
     ],
   });
 
-  //   const ventiCabin = await prisma.service.create({
-  //     data: {
-  //       name: "Venti Cabin",
-  //       description: `For groups of 15-20
-  // Rates:
-
-  //     Day tour (8AM - 5PM) - ₱10,000
-  //     Overnight (4PM - 12NN) - ₱12,000
-  //     Additional guests - ₱350 each
+  //const ventiCabin = await prisma.service.create({
+	  //data: {
+		  //name: "Venti Cabin",
+		  //description: `For groups of 15-20
+		 // Rates:
+		//	  Day tour (8AM - 5PM) - ₱10,000
+		 // 	Overnight (4PM - 12NN) - ₱12,000
+		//	Additional guests - ₱350 each
 
   // Additional Inclusions:
 
@@ -150,29 +148,6 @@ async function main() {
         name: "Completed",
       },
     ],
-  });
-
-  const paymentMethod = await prisma.paymentMethod.create({
-    data: {
-      name: faker.finance.accountName(),
-      type: "GCASH",
-    },
-  });
-
-  await prisma.paymentAccount.create({
-    data: {
-      paymentMethod: {
-        connect: {
-          id: paymentMethod.id,
-        },
-      },
-    },
-  });
-
-  await prisma.bookingStatus.findUnique({
-    where: {
-      name: "Pending",
-    },
   });
 
   await prisma.feedbackStatus.createMany({
