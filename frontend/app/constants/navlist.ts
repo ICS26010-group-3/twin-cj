@@ -20,6 +20,10 @@ export const navlist = [
     href: "/contact",
   },
   {
+    label: "Eco-Tourism",
+    href: "/eco-tourism",
+  },
+  {
     label: "FAQs",
     href: "/faqs",
   },
