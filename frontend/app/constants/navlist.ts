@@ -23,8 +23,8 @@ export const navlist = [
     label: "Eco-Tourism",
     href: "/eco-tourism",
   },
-  {
-    label: "FAQs",
-    href: "/faqs",
-  },
+  // {
+  //   label: "FAQs",
+  //   href: "/faqs",
+  // },
 ];

@@ -65,11 +65,11 @@ const Footer: React.FC = () => {
                   Eco-Tourism
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href="/faqs" className={styles.link}>
                   FAQs
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 
