@@ -1,0 +1,40 @@
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100dvh;
+  z-index: -1;
+  position: relative;
+  background-color: var(--color-neutral-800);
+}
+
+.background {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.4;
+  background-image: url("http://localhost:3000/assets/home_cover.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  z-index: -2;
+}
+
+.header-text {
+  font-size: var(--text-size-4xl);
+  line-height: var(--text-line-height-4xl);
+  color: var(--color-neutral-200);
+  font-weight: 700;
+  text-align: center;
+  margin: 3rem auto;
+
+  &::after {
+    display: block;
+    margin: 1rem auto;
+    content: "";
+    width: 50%;
+    height: 3px;
+    background-color: var(--color-neutral-200);
+  }
+}

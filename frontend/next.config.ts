@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
         hostname: "localhost",
         port: "8080",
       },
+      {
+        hostname: "*"
+      }
     ], // Allow images from localhost
   },
   async rewrites() {
