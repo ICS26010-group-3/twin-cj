@@ -40,7 +40,6 @@ const Chatbot: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Replace with your API endpoint
       const response = await fetch(
         `${options.baseURL}/api/faqs/search?q=${encodeURIComponent(query)}`,
         {
@@ -59,8 +58,8 @@ const Chatbot: React.FC = () => {
 
       if (Array.isArray(data) && data.length > 0) {
         const reply = data
-          .map((faq) => `${faq.question}\n\n${faq.answer}`)
-          .join("\n\n");
+          .map((faq) => `<b>${faq.question}</b><br /><br />${faq.answer}`)
+          .join("<br/><br/>");
         setMessages((prev) => [
           ...prev,
           {
@@ -73,7 +72,7 @@ const Chatbot: React.FC = () => {
         setMessages((prev) => [
           ...prev,
           {
-            text: "Sorry, I couldn't find any relevant information.",
+            text: "Sorry, I couldn't find any relevant information. For any inquiries, you may contact us directly on the <a href='/contact' target='_blank'>Contact Us</a> page.",
             sender: "bot",
           },
         ]);
@@ -179,7 +178,10 @@ const Chatbot: React.FC = () => {
         <div className="chatbot-messages">
           {messages.map((message, index) => (
             <div key={index} className={`message ${message.sender}`}>
-              <div className="message-content">{message.text}</div>
+              <div
+                className="message-content"
+                dangerouslySetInnerHTML={{ __html: message.text }}
+              ></div>
             </div>
           ))}
 

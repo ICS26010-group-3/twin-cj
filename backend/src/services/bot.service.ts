@@ -20,8 +20,6 @@ export const loadFAQsFromExcel = () => {
     defval: "",
   });
 
-  console.log("Loaded FAQs:", faqs);
-
   return faqs.slice(1);
 };
 
