@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { FaComment, FaPaperPlane, FaTimes } from "react-icons/fa";
 import "./Chatbot.scss";
+import { options } from "../api";
 
 const Chatbot: React.FC = () => {
   // State for chat visibility (if chat window is open or closed)
@@ -29,7 +30,8 @@ const Chatbot: React.FC = () => {
    * Handles when user submits a question
    * @param e - The form submission event
    */
-  const handleSearch = (e: React.FormEvent) => {
+
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault(); // prevents page refresh
     if (!query.trim()) return; // ignores empty queries
 
@@ -37,21 +39,99 @@ const Chatbot: React.FC = () => {
     setMessages((prev) => [...prev, { text: query, sender: "user" }]);
     setIsLoading(true);
 
-    // Simulate bot response (replace with real API call)
-    setTimeout(() => {
+    try {
+      // Replace with your API endpoint
+      const response = await fetch(
+        `${options.baseURL}/api/faqs/search?q=${encodeURIComponent(query)}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch response from the server.");
+      }
+
+      const data = await response.json();
+
+      if (Array.isArray(data) && data.length > 0) {
+        const reply = data
+          .map((faq) => `${faq.question}\n\n${faq.answer}`)
+          .join("\n\n");
+        setMessages((prev) => [
+          ...prev,
+          {
+            text: reply,
+            sender: "bot",
+          },
+        ]);
+      } else {
+        // If no FAQs are found, show a default message
+        setMessages((prev) => [
+          ...prev,
+          {
+            text: "Sorry, I couldn't find any relevant information.",
+            sender: "bot",
+          },
+        ]);
+      }
+    } catch (error) {
+      console.error("Error fetching chatbot response:", error);
       setMessages((prev) => [
         ...prev,
         {
-          text: "What hafen vella?", // Mock response haha to change :)
+          text: "Oops! Something went wrong. Please try again later.",
           sender: "bot",
         },
       ]);
-
+    } finally {
       // Reset states
       setIsLoading(false);
       setQuery("");
-    }, 800);
+    }
   };
+
+  // Add bot response to chat
+  //     setMessages((prev) => [
+  //       ...prev,
+  //       {
+  //         text: data.reply || "Sorry, I couldn't understand that.",
+  //         sender: "bot",
+  //       },
+  //     ]);
+  //   } catch (error) {
+  //     console.error("Error fetching chatbot response:", error);
+  //     setMessages((prev) => [
+  //       ...prev,
+  //       {
+  //         text: "Oops! Something went wrong. Please try again later.",
+  //         sender: "bot",
+  //       },
+  //     ]);
+  //   } finally {
+  //     // Reset states
+  //     setIsLoading(false);
+  //     setQuery("");
+  //   }
+  // };
+
+  // Simulate bot response (replace with real API call)
+  // setTimeout(() => {
+  //   setMessages((prev) => [
+  //     ...prev,
+  //     {
+  //       text: "What hafen vella?", // Mock response haha to change :)
+  //       sender: "bot",
+  //     },
+  //   ]);
+
+  //   // Reset states
+  //   setIsLoading(false);
+  //   setQuery("");
+  // }, 800);
 
   // SIDE EFFECTS ------------------------------------------------------------
   // Runs once when component loads

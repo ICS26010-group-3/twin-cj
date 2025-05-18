@@ -42,7 +42,5 @@ export const searchFAQs = (query: string) => {
       faq.answer.toLowerCase().includes(query.toLowerCase())
   );
 
-  console.log("query:", query, results);
-
   return results;
 };
