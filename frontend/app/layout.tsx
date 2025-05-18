@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Chatbot from "./components/Chatbot";
 import "./globals.scss";
 import {
   Abril_Fatface,
@@ -46,7 +45,6 @@ export default function RootLayout({
         className={`${poppins.variable} ${openSans.variable} ${abrilFatface.variable} ${poltawskiNowy.variable} ${openSans.className}`}
       >
         {children}
-        <Chatbot />
       </body>
     </html>
   );

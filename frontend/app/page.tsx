@@ -10,6 +10,7 @@ import MainLayout from "./layouts/main.layout";
 import { useRouter } from "next/navigation";
 import { Parallax } from "react-parallax";
 import Feedbacks from "./components/feedback-container";
+import Chatbot from "./components/Chatbot";
 
 const cabins = [
   {
@@ -84,6 +85,7 @@ const BookingButton = () => {
 export default function page() {
   return (
     <MainLayout>
+      <Chatbot/>
       <main>
         <section className={styles.heroSection}>
           <div className={styles.backgroundImage}>
