@@ -1,5 +1,6 @@
 import React from "react";
 import Footer from "../components/footer";
+import Chatbot from "../components/Chatbot";
 import Navbar from "../components/navbar";
 
 export default function MainLayout({
@@ -11,6 +12,7 @@ export default function MainLayout({
     <>
       <Navbar />
       {children}
+      <Chatbot />
       <Footer />
     </>
   );
