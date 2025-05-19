@@ -20,7 +20,20 @@ const Chatbot: React.FC = () => {
       text: string;
       sender: "user" | "bot";
     }>
-  >([]);
+  >([
+    {
+      text: `Hello! I'm your FAQ assistant. I can assist you with:<br />
+      <ul>
+        <li><b>Payment Inquiries</b></li>
+        <li><b>Check-in / Check-out</b></li>
+        <li><b>Pets</b></li>
+        <li><b>Food & Drinks</b></li>
+        <li><b>WiFi</b></li>
+      </ul><br />
+      Type your question below!`,
+      sender: "bot",
+    },
+  ]);
 
   // State for notification badge (notification when chat is closed)
   const [hasNotification, setHasNotification] = useState(true);
@@ -30,6 +43,18 @@ const Chatbot: React.FC = () => {
    * Handles when user submits a question
    * @param e - The form submission event
    */
+
+  // Runs once when component loads
+  useEffect(() => {
+    const saved = localStorage.getItem("chatbotHistory");
+    if (saved) {
+      setMessages(JSON.parse(saved));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("chatbotHistory", JSON.stringify(messages));
+  }, [messages]);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault(); // prevents page refresh
@@ -56,27 +81,30 @@ const Chatbot: React.FC = () => {
 
       const data = await response.json();
 
-      if (Array.isArray(data) && data.length > 0) {
-        const reply = data
-          .map((faq) => `<b>${faq.question}</b><br /><br />${faq.answer}`)
-          .join("<br/><br/>");
-        setMessages((prev) => [
-          ...prev,
-          {
-            text: reply,
-            sender: "bot",
-          },
-        ]);
-      } else {
-        // If no FAQs are found, show a default message
-        setMessages((prev) => [
-          ...prev,
-          {
-            text: "Sorry, I couldn't find any relevant information. For any inquiries, you may contact us directly on the <a href='/contact' target='_blank'>Contact Us</a> page.",
-            sender: "bot",
-          },
-        ]);
-      }
+      setTimeout(() => {
+        if (Array.isArray(data) && data.length > 0) {
+          const reply = data
+            .map((faq) => `<b>${faq.question}</b><br /><br />${faq.answer}`)
+            .join("<br/><br/>");
+          setMessages((prev) => [
+            ...prev,
+            {
+              text: reply,
+              sender: "bot",
+            },
+          ]);
+        } else {
+          setMessages((prev) => [
+            ...prev,
+            {
+              text: "Sorry, I couldn't find any relevant information. For any inquiries, you may contact us directly on the <a href='/contact' target='_blank'>Contact Us</a> page.",
+              sender: "bot",
+            },
+          ]);
+        }
+        setIsLoading(false);
+        setQuery("");
+      }, 2000);
     } catch (error) {
       console.error("Error fetching chatbot response:", error);
       setMessages((prev) => [
@@ -86,8 +114,6 @@ const Chatbot: React.FC = () => {
           sender: "bot",
         },
       ]);
-    } finally {
-      // Reset states
       setIsLoading(false);
       setQuery("");
     }
@@ -133,16 +159,7 @@ const Chatbot: React.FC = () => {
   // }, 800);
 
   // SIDE EFFECTS ------------------------------------------------------------
-  // Runs once when component loads
-  useEffect(() => {
-    // Initialize with welcome message
-    setMessages([
-      {
-        text: "Hello! I'm your FAQ assistant. How can I help you?",
-        sender: "bot",
-      },
-    ]);
-  }, []); // Empty array = runs only once
+  // Empty array = runs only once
 
   // CHAT TOGGLE HANDLER -----------------------------------------------------
   const handleOpenChat = () => {
