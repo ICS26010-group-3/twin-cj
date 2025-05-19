@@ -66,7 +66,7 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/Team" className={styles.link}>
+                <Link href="/developers" className={styles.link}>
                   Our Team
                 </Link>
               </li>
